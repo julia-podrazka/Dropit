@@ -2,37 +2,71 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.navbar {
+  background-color: #1d1f24;
+  min-width: 100%;
+  color: #74b476;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#navbar-content {
   display: flex;
-  flex-direction: column;
+  flex-grow: 1;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.nav-item {
+  flex-grow: 1;
+  flex-basis: auto;
+  vertical-align: center;
+  text-align: center;
+  align-items: center;
+}
+
+.nav-item-link {
+  text-align: center;
+  display: inline-block;
+}
+
+.register-btn {
+  background-color: #74b476;
+  margin: 10px;
+  max-width: 200px;
+}
+
+.log-in-btn {
+  background-color: #1d1f24;
+  border: 1px solid #787878;
+  color: white;
+  margin: 10px;
+  max-width: 200px;
+}
+
+#login-register {
+  vertical-align: center;
+}
+
+.logo_svg {
+  height: 120px;
+  width: 120px;
+}
+
+.side-column {
+  height: 1000px;
+}
+
+.main-column {
+  height: 1000px;
+  background-color: rgba(29, 31, 36, 0.95);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+#section-1 {
+  margin: 0;
+  width: 100%;
+  background-image: url("./bg1.jpg");
+  background-size: cover;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+a {
+  color: #5579af;
 }

@@ -1,127 +1,68 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
+import {ReactComponent as LogoSVG} from "./logo.svg";
+import './App.css';
+import {Link} from "react-router-dom";
 
-const todoItems = [
-  {
-    id: 1,
-    title: "Go to Market",
-    description: "Buy ingredients to prepare dinner",
-    completed: true,
-  },
-  {
-    id: 2,
-    title: "Study",
-    description: "Read Algebra and History textbook for the upcoming test",
-    completed: false,
-  },
-  {
-    id: 3,
-    title: "Sammy's books",
-    description: "Go to library to return Sammy's books",
-    completed: true,
-  },
-  {
-    id: 4,
-    title: "Article",
-    description: "Write article on how to use Django with React",
-    completed: false,
-  },
-];
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      viewCompleted: false,
-      todoList: todoItems,
-    };
-  }
-
-  displayCompleted = (status) => {
-    if (status) {
-      return this.setState({ viewCompleted: true });
-    }
-
-    return this.setState({ viewCompleted: false });
-  };
-
-  renderTabList = () => {
+// should remove if doesn't come to use
+function NavbarItem(props) {
     return (
-      <div className="nav nav-tabs">
-        <span
-          className={this.state.viewCompleted ? "nav-link active" : "nav-link"}
-          onClick={() => this.displayCompleted(true)}
-        >
-          Complete
-        </span>
-        <span
-          className={this.state.viewCompleted ? "nav-link" : "nav-link active"}
-          onClick={() => this.displayCompleted(false)}
-        >
-          Incomplete
-        </span>
-      </div>
+        <li className="nav-item">
+            <a className="nav-item-link">{props.text}</a>
+        </li>
     );
-  };
-
-  renderItems = () => {
-    const { viewCompleted } = this.state;
-    const newItems = this.state.todoList.filter(
-      (item) => item.completed == viewCompleted
-    );
-
-    return newItems.map((item) => (
-      <li
-        key={item.id}
-        className="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <span
-          className={`todo-title mr-2 ${
-            this.state.viewCompleted ? "completed-todo" : ""
-          }`}
-          title={item.description}
-        >
-          {item.title}
-        </span>
-        <span>
-          <button
-            className="btn btn-secondary mr-2"
-          >
-            Edit
-          </button>
-          <button
-            className="btn btn-danger"
-          >
-            Delete
-          </button>
-        </span>
-      </li>
-    ));
-  };
-
-  render() {
-    return (
-      <main className="container">
-        <h1 className="text-white text-uppercase text-center my-4">Todo app</h1>
-        <div className="row">
-          <div className="col-md-6 col-sm-10 mx-auto p-0">
-            <div className="card p-3">
-              <div className="mb-4">
-                <button
-                  className="btn btn-primary"
-                >
-                  Add task
-                </button>
-              </div>
-              {this.renderTabList()}
-              <ul className="list-group list-group-flush border-top-0">
-                {this.renderItems()}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  }
 }
 
-export default App;
+function Navbar() {
+    return (
+        <div id="top-navbar" className="navbar navbar-expand-md">
+            <div className="container-fluid">
+                <div className="col-1"/>
+                <div className="col-2">
+                    <a className="navbar-brand">
+                        <LogoSVG/>
+                    </a>
+                </div>
+                <div className="col-6"/>
+                <form className="form col">
+                    <Link className="btn btn-block register-btn" to='/register/'>
+                        Register
+                    </Link>
+                </form>
+                <form className="form col">
+                    <Link className="btn btn-block log-in-btn" to='/login/'>
+                        Log in
+                    </Link>
+                </form>
+                <div className="col-1"/>
+            </div>
+        </div>
+    );
+}
+
+function FirstSection() {
+    return (
+        <div id="section-1" className="row">
+            <div className="col-3 side-column"/>
+            <div className="col-6 main-column">
+                Will add some shit here
+            </div>
+            <div className="col-3 side-column"/>
+        </div>
+    );
+}
+
+function SecondSection() {
+    return (
+        <div/>
+    );
+}
+
+export default function App() {
+    return (
+        <main>
+            <Navbar/>
+            <FirstSection/>
+            <SecondSection />
+        </main>
+    );
+}
