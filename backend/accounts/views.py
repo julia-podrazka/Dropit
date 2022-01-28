@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.shortcuts import redirect
-from django.contrib.auth.models import User
-from django.http import HttpResponse
+#from django.contrib.auth.models import User
 
 # Create your views here.
 
 from .forms import LoginForm, RegisterForm
+
+User = get_user_model()
 
 
 def register_view(request):
@@ -25,7 +26,6 @@ def register_view(request):
         else:
             request.session['register_error'] = 1
     return render(request, "forms.html", {"form": form})
-        # Czy powinno tu być coś zwracane? 25:12
 
 
 def login_view(request):
@@ -40,8 +40,6 @@ def login_view(request):
         else:
             request.session['invalid_user'] = 1
     return render(request, "forms.html", {"form": form})
-
-        # Czy powinno tu być coś zwracane? 25:12
 
 
 def logout_view(request):
