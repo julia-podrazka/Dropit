@@ -1,11 +1,6 @@
 from django.contrib import admin
 from django.urls import path
 
-<<<<<<< HEAD
-urlpatterns = [
-    path('admin/', admin.site.urls),
-]
-=======
 from accounts.views import (
     login_view,
     logout_view,
@@ -18,4 +13,3 @@ urlpatterns = [
     path('logout/', logout_view),
     path('register/', register_view),
 ]
->>>>>>> new_backend
