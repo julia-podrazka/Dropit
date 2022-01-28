@@ -9,12 +9,8 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-<<<<<<< HEAD
-
-=======
 # added
 import os
->>>>>>> new_backend
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,11 +26,7 @@ SECRET_KEY = 'django-insecure-u6+ggs5dll0$xz&ctxweglkpz7l#sceatj*lms=zvrv&&(1r8x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-<<<<<<< HEAD
-ALLOWED_HOSTS = []
-=======
 ALLOWED_HOSTS = ['127.0.0.1']
->>>>>>> new_backend
 
 
 # Application definition
@@ -47,13 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'projekt',
-<<<<<<< HEAD
-=======
     'products',
     'CaloriesBurnedDuringExercise',
     'FoodCalories',
     'FoodRecipes',
->>>>>>> new_backend
 ]
 
 MIDDLEWARE = [
@@ -71,11 +60,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
-        'DIRS': [],
-=======
         'DIRS': [os.path.join(BASE_DIR, "templates")],
->>>>>>> new_backend
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,15 +81,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-<<<<<<< HEAD
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-=======
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
             'read_default_file': '/etc/my.cnf',
         },
->>>>>>> new_backend
     }
 }
 
@@ -127,11 +107,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-<<<<<<< HEAD
-=======
 LOGIN_URL = "/login"
 LOGIN_REDIRECT_URL = "/"
->>>>>>> new_backend
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -149,11 +126,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-<<<<<<< HEAD
-=======
 # added
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
->>>>>>> new_backend
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
