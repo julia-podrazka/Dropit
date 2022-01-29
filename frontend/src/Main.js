@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {ReactComponent as LogoSVG} from "./logo.svg";
-import './App.css';
+import './Main.css';
 import {Link} from "react-router-dom";
 
 // should remove if doesn't come to use
@@ -57,7 +57,7 @@ function SecondSection() {
     );
 }
 
-export default function App() {
+export default function Main() {
     return (
         <main>
             <Navbar/>
