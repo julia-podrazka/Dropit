@@ -15,5 +15,4 @@ urlpatterns = [
     path('logout/', logout_view),
     path('register/', register_view),
     path('', TemplateView.as_view(template_name='index.html')),
-    path('', index),
 ]
