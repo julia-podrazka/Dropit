@@ -1,47 +1,33 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.shortcuts import redirect
-#from django.contrib.auth.models import User
-
-# Create your views here.
-
-from .forms import LoginForm, RegisterForm
-
-User = get_user_model()
+from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
+from rest_framework import permissions, status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializers import UserSerializer, UserSerializerWithToken
 
 
-def register_view(request):
-    form = RegisterForm(request.POST or None)
-    if form.is_valid():
-        username = form.cleaned_data.get("username")
-        password = form.cleaned_data.get("password")
-        password_confirm = form.cleaned_data.get("password_confirm")
-        try:
-            user = User.objects.create_user(username, password)
-        except:
-            user = None
-        if user is not None:
-            login(request, user)
-            return redirect("/")
-        else:
-            request.session['register_error'] = 1
-    return render(request, "forms.html", {"form": form})
+@api_view(['GET'])
+def current_user(request):
+    """
+    Determine the current user by their token, and return their data
+    """
+
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
 
 
-def login_view(request):
-    form = LoginForm(request.POST or None)
-    if form.is_valid():
-        username = form.cleaned_data.get("username")
-        password = form.cleaned_data.get("password")
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect("/")
-        else:
-            request.session['invalid_user'] = 1
-    return render(request, "forms.html", {"form": form})
+class UserList(APIView):
+    """
+    Create a new user. It's called 'UserList' because normally we'd have a get
+    method here too, for retrieving a list of all User objects.
+    """
 
+    permission_classes = (permissions.AllowAny,)
 
-def logout_view(request):
-    logout(request)
-    return redirect("/login")
+    def post(self, request, format=None):
+        serializer = UserSerializerWithToken(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
