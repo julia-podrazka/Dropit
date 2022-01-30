@@ -23,7 +23,7 @@ export default function Register() {
         });
         const json = await response.json();
         localStorage.setItem('token', json.token);
-        localStorage.setItem('username', json.user.username);
+        localStorage.setItem('username', json.username);
         navigate('/dashboard/');
     }
 
