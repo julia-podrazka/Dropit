@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { useNavigate } from "react-router-dom";
+import {getCookie} from './utils.js';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -11,22 +12,23 @@ export default function Login() {
 
     const handleLogin = async (e, data) => {
         e.preventDefault();
-
-        const response = await fetch('http://localhost:8000/api/login/', {
+        const csrftoken = getCookie('csrftoken');
+        const response = await fetch('/token-auth/', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
             },
             body: JSON.stringify(data),
         });
-
         const json = await response.json();
         localStorage.setItem('token', json.token);
-        navigate('/something/');
+        localStorage.setItem('username', json.user.username);
+        navigate('/dashboard/');
     }
 
     return (
-        <form onSubmit={e => handleLogin(e, [username, password])}>
+        <form onSubmit={e => handleLogin(e, {username, password})}>
             <h4>Log In</h4>
             <label htmlFor="username">Username</label>
             <input
@@ -45,4 +47,4 @@ export default function Login() {
             <input type="submit"/>
         </form>
     );
-}
+};
