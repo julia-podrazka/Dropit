@@ -13,7 +13,7 @@ export default function Login() {
     const handleLogin = async (e, data) => {
         e.preventDefault();
         const csrftoken = getCookie('csrftoken');
-        const response = await fetch('/api-token-auth/', {
+        const response = await fetch('/token-auth/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

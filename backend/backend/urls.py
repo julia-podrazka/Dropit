@@ -3,7 +3,6 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from .views import index
 from rest_framework_jwt.views import obtain_jwt_token
-from rest_framework.authtoken import views
 
 # from accounts.views import (
 #     login_view,
@@ -17,8 +16,6 @@ urlpatterns = [
     # path('logout/', logout_view),
     # path('register/', register_view),
     path('', TemplateView.as_view(template_name='index.html')),
-    # path('token-auth/', obtain_jwt_token),
-    path('api-token-auth/', views.obtain_auth_token),
-    # path('accounts/', include('accounts.urls'))
-    path('api/v1/accounts/', include('accounts.urls')),
+    path('token-auth/', obtain_jwt_token),
+    path('accounts/', include('accounts.urls'))
 ]

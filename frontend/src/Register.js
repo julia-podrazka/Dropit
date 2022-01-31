@@ -5,13 +5,10 @@ import {getCookie} from './utils.js';
 export default function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
     let navigate = useNavigate();
 
     const onChangeUsername = e => setUsername(e.target.value);
     const onChangePassword = e => setPassword(e.target.value);
-    const onChangeName = e => setName(e.target.value);
-
 
     const handleRegister = async (e, data) => {
         e.preventDefault();
@@ -27,7 +24,6 @@ export default function Register() {
         const json = await response.json();
         localStorage.setItem('token', json.token);
         localStorage.setItem('username', json.username);
-        localStorage.setItem('name', json.name);
         navigate('/dashboard/');
     }
 
@@ -47,13 +43,6 @@ export default function Register() {
                 name="password"
                 value={password}
                 onChange={onChangePassword}
-            />
-            <label htmlFor="name">Name</label>
-            <input
-                type="name"
-                name="name"
-                value={name}
-                onChange={onChangeName}
             />
             <input type="submit"/>
         </form>
