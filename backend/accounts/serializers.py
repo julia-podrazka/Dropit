@@ -1,15 +1,20 @@
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import User
+from .models import Users
+from allauth.account.adapter import get_adapter
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('username',)
+        model = Users
+        fields = ('username', 'name', 'age', 'gender', 'weight', 'height',
+                  'vegetarian', 'max_calories')
+
+# Register user
 
 
-class UserSerializerWithToken(serializers.ModelSerializer):
+class UserSerializerWithToken(serializers.Serializer):
     token = serializers.SerializerMethodField()
     password = serializers.CharField(write_only=True)
 
@@ -30,5 +35,23 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         return instance
 
     class Meta:
-        model = User
-        fields = ('token', 'username', 'password')
+        model = Users
+        fields = ('token', 'username', 'password', 'name', 'age', 'gender', 'weight', 'height',
+                  'vegetarian', 'max_calories')
+
+    # def validate_password(self, password):
+    #     return get_adapter().clean_password(password)
+    #
+    # def get_clean_data(self):
+    #     return {
+    #         'user_type': self.validated_data.get('user_type', ''),
+    #         'password': self.validated_data.get('password', ''),
+    #     }
+    #
+    # def save(self, request):
+    #     adapter = get_adapter()
+    #     user = adapter.new_user(request)
+    #     self.cleaned_data = self.get_clean_data()
+    #     adapter.save_user(request, user, self)
+    #     self.custom_signup(request, user)
+    #     return user
