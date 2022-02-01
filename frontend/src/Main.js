@@ -44,7 +44,9 @@ function FirstSection() {
         <div id="section-1" className="row">
             <div className="col-3 side-column"/>
             <div className="col-6 main-column">
-                Will add some shit here
+                <br/>
+                <h3 className="text-center">Managing your diet has never been easier</h3>
+                <span className="text-center">It's time to drop it!</span>
             </div>
             <div className="col-3 side-column"/>
         </div>

@@ -2,10 +2,15 @@
   text-align: center;
 }
 
+:root {
+  --bg-color: #1d1f24;
+  --my-green: #74b476;
+}
+
 .navbar {
-  background-color: #1d1f24;
+  background-color: var(--bg-color);
   min-width: 100%;
-  color: #74b476;
+  color: var(--my-green);
 }
 
 #navbar-content {
@@ -28,7 +33,7 @@
 }
 
 .register-btn {
-  background-color: #74b476;
+  background-color: var(--my-green);
   margin: 10px;
   max-width: 200px;
 }
@@ -69,4 +74,35 @@
 
 a {
   color: #5579af;
+}
+
+.input-field {
+  border-radius: 3px;
+  border: solid 1px grey;
+  margin: 5px;
+  padding-left: 10px;
+  width: 100%;
+  align-items: stretch;
+}
+
+.submit-btn {
+  background-color: var(--my-green);
+}
+
+#invalid-input-alert {
+  opacity: 0;
+  color: #ff5d5d;
+}
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
+form i {
+  margin-left: -30px;
+  cursor: pointer;
 }

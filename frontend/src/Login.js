@@ -1,11 +1,19 @@
 import React, {useState} from 'react';
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {getCookie} from './utils.js';
 
-export default function Login() {
+function LoginForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     let navigate = useNavigate();
+
+    const alert = document.getElementById('invalid-input-alert');
+
+    const togglePassword = e => {
+        const field = document.getElementById('password-input');
+        field.type = field.type === "password" ? "text" : "password";
+        e.target.classList.toggle("bi-eye");
+    };
 
     const onChangeUsername = e => setUsername(e.target.value);
     const onChangePassword = e => setPassword(e.target.value);
@@ -29,22 +37,61 @@ export default function Login() {
 
     return (
         <form onSubmit={e => handleLogin(e, {username, password})}>
-            <h4>Log In</h4>
-            <label htmlFor="username">Username</label>
-            <input
-                type="text"
-                name="username"
-                value={username}
-                onChange={onChangeUsername}
-            />
-            <label htmlFor="password">Password</label>
-            <input
-                type="password"
-                name="password"
-                value={password}
-                onChange={onChangePassword}
-            />
-            <input type="submit"/>
+            <div>
+                <input className="input-field"
+                    type="text"
+                    name="username"
+                    placeholder="username"
+                    value={username}
+                    onChange={onChangeUsername}
+                />
+            </div>
+            <div>
+                <input className="input-field"
+                    type="password"
+                    name="password"
+                    id="password-input"
+                    placeholder="password"
+                    value={password}
+                    onChange={onChangePassword}
+                />
+                <i className="bi bi-eye-slash" id="toggle-password" onClick={togglePassword}/>
+            </div>
+            <div>
+                <span id="invalid-input-alert">This is an alert</span>
+            </div>
+            <div>
+                <input
+                    className="input-field"
+                    type="submit"
+                    value="Log in"
+                />
+            </div>
         </form>
     );
-};
+}
+
+export default function Login() {
+    return (
+        <div className="vertical-center">
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        <h1 className="text-center">Log in</h1>
+                    </div>
+                </div>
+                <br/>
+                <div className="row">
+                    <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        <LoginForm/>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        Don't have an account? <Link to={{ pathname: "/register/" }}>Sign up</Link>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
