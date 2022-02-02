@@ -7,16 +7,16 @@ import './index.css';
 import Main from './Main';
 import LoginForm from './Login';
 import Register from './Register';
-import Dashboard from './Dashboard';
+import Home from './Home';
 
 ReactDOM.render(
     <Router>
         <div>
             <Routes>
                 <Route path="/" element={<Main />} />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/login/" element={<LoginForm />} />
+                <Route path="/register/" element={<Register />} />
+                <Route path="/home/" element={<Home />} />
             </Routes>
         </div>
     </Router>,

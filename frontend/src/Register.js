@@ -67,7 +67,7 @@ function RegisterForm() {
         const json = await response.json();
         localStorage.setItem('token', json.token);
         localStorage.setItem('username', json.username);
-        navigate('/dashboard/');
+        navigate('/home/');
     }
 
     return (
@@ -108,7 +108,7 @@ function RegisterForm() {
 
 export default function Register() {
     return (
-        <div className="vertical-center">
+        <div className="main vertical-center">
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
@@ -123,7 +123,7 @@ export default function Register() {
                 </div>
                 <div className="row">
                     <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
-                        Already have an account? <Link to={{ pathname: "/login/" }}>Log in</Link>
+                        Already have an account? <Link to="/login/">Log in</Link>
                     </div>
                 </div>
             </div>

@@ -1,14 +1,21 @@
+:root {
+  --bg-dark: #1d1f24;
+  --bg-light: #343a40;
+  --bg-input: #31343d;
+  --my-green: #74b476;
+}
+
+.main {
+  background-color: var(--bg-dark);
+  color: white;
+}
+
 .App {
   text-align: center;
 }
 
-:root {
-  --bg-color: #1d1f24;
-  --my-green: #74b476;
-}
-
 .navbar {
-  background-color: var(--bg-color);
+  background-color: var(--bg-dark);
   min-width: 100%;
   color: var(--my-green);
 }
@@ -41,7 +48,6 @@
 .log-in-btn {
   background-color: #1d1f24;
   border: 1px solid #787878;
-  color: white;
   margin: 10px;
   max-width: 200px;
 }
@@ -73,7 +79,12 @@
 }
 
 a {
-  color: #5579af;
+  color: #618ccc;
+}
+
+input {
+  background-color: var(--bg-input);
+  color: white;
 }
 
 .input-field {
@@ -105,4 +116,33 @@ a {
 form i {
   margin-left: -30px;
   cursor: pointer;
+}
+
+hr {
+  margin: 1rem 0;
+  background-color: white;
+  color: white;
+  opacity: 0.25;
+}
+
+.sidebar-item button {
+  margin: 10px;
+  border: 0;
+  color: white;
+  font-size: 20px;
+  height: 100%;
+  width: 100%;
+  text-align: left;
+  transition: color ease 0.2s;
+  background-color: var(--bg-light);
+}
+
+.sidebar-item svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+}
+
+.sidebar-item button:hover {
+  color: var(--my-green);
 }

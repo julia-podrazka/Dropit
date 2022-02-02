@@ -32,7 +32,7 @@ function LoginForm() {
         const json = await response.json();
         localStorage.setItem('token', json.token);
         localStorage.setItem('username', json.user.username);
-        navigate('/dashboard/');
+        navigate('/home/');
     }
 
     return (
@@ -73,7 +73,7 @@ function LoginForm() {
 
 export default function Login() {
     return (
-        <div className="vertical-center">
+        <div className="main vertical-center">
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
@@ -88,7 +88,7 @@ export default function Login() {
                 </div>
                 <div className="row">
                     <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
-                        Don't have an account? <Link to={{ pathname: "/register/" }}>Sign up</Link>
+                        Don't have an account? <Link to="/register/">Sign up</Link>
                     </div>
                 </div>
             </div>
