@@ -20,6 +20,7 @@ function LoginForm() {
 
     const handleLogin = async (e, data) => {
         e.preventDefault();
+        
         const csrftoken = getCookie('csrftoken');
         const response = await fetch('/token-auth/', {
             method: 'POST',
@@ -30,8 +31,10 @@ function LoginForm() {
             body: JSON.stringify(data),
         });
         const json = await response.json();
+
         localStorage.setItem('token', json.token);
         localStorage.setItem('username', json.user.username);
+
         navigate('/home/');
     }
 
@@ -58,7 +61,7 @@ function LoginForm() {
                 <i className="bi bi-eye-slash" id="toggle-password" onClick={togglePassword}/>
             </div>
             <div>
-                <span id="invalid-input-alert">This is an alert</span>
+                <span id="invalid-input-alert">TODO add credential validation</span>
             </div>
             <div>
                 <input

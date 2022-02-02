@@ -61,10 +61,10 @@ function SecondSection() {
 
 export default function Main() {
     return (
-        <main>
+        <div className="main">
             <Navbar/>
             <FirstSection/>
             <SecondSection />
-        </main>
+        </div>
     );
 }

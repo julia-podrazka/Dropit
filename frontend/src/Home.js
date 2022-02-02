@@ -37,6 +37,10 @@ function Sidebar(props) {
                     )
                 }
             </ul>
+            <hr/>
+            <div>
+                <span>TODO add log out</span>
+            </div>
         </div>
     );
 }
@@ -87,7 +91,6 @@ export default function Home() {
         ['exercises', 'running'],
         ['personal', 'user'],
         ['settings', 'cog']
-
     ];
     fontawesome.library.add(faUtensils, faRunning, faUser, faCog);
 
