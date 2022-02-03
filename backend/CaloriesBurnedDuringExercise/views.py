@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import UserExercise, CaloriesBurnedDuringExercise
 from .serializers import UserExerciseSerializer, CaloriesBurnedDuringExerciseSerializer, \
     CaloriesBurnedDuringExerciseIdSerializer
+from datetime import date
 from rest_framework.response import Response
 
 # Create your views here.
@@ -35,7 +36,7 @@ class UserExerciseViews(viewsets.ModelViewSet):
     serializer_class = UserExerciseSerializer
 
     def get_queryset(self):
-        return super().get_queryset().filter(user=self.request.user)
+        return super().get_queryset().filter(user=self.request.user, date=date.today())
 
     # def create(self, request, *args, **kwargs):
     #     data = {
