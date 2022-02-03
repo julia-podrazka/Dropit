@@ -36,6 +36,8 @@ class UserExerciseViews(viewsets.ModelViewSet):
     serializer_class = UserExerciseSerializer
 
     def get_queryset(self):
+        # return super().get_queryset().filter(user=self.request.user, date=date.today(),
+        #   duration=self.request.data['duration'])
         return super().get_queryset().filter(user=self.request.user, date=date.today())
 
     # def create(self, request, *args, **kwargs):

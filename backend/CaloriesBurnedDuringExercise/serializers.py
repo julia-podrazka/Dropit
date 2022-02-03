@@ -21,3 +21,9 @@ class UserExerciseSerializer(serializers.ModelSerializer):
         model = UserExercise
         fields = ('exercise', 'exercise_detail', 'date', 'duration',)
         # exclude = ('user',)
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserExercise
+        fields = ('user',)
