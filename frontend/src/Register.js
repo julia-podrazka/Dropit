@@ -2,38 +2,6 @@ import React, {useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {getCookie} from './utils.js';
 
-function validateUsername(username, alertElem) {
-    if (/^[A-Za-z\d-_]{6,50}$/.test(username)) {
-        alertElem.style.opacity = '0';
-        alertElem.textContent = '.';
-        return true;
-
-    } else {
-        alertElem.style.opacity = '1';
-        if (username.length < 8 || username.length > 32)
-            alertElem.textContent = 'Username must contain 6 to 50 characters.';
-        else
-            alertElem.textContent = 'Username can contain only alphanumeric characters, hyphens and underscores.';
-        return false;
-    }
-}
-
-function validatePassword(password, alertElem) {
-    if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,32}$/.test(password)) {
-        alertElem.style.opacity = '0';
-        alertElem.textContent = '.';
-        return true;
-
-    } else {
-        alertElem.style.opacity = '1';
-        if (password.length < 8 || password.length > 32)
-            alertElem.textContent = 'Password must contain 8 to 32 characters.';
-        else
-            alertElem.textContent = 'Password must contain at least one letter and at least one number.';
-        return false;
-    }
-}
-
 function RegisterForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -129,4 +97,36 @@ export default function Register() {
             </div>
         </div>
     );
+}
+
+function validateUsername(username, alertElem) {
+    if (/^[A-Za-z\d-_]{6,50}$/.test(username)) {
+        alertElem.style.opacity = '0';
+        alertElem.textContent = '.';
+        return true;
+
+    } else {
+        alertElem.style.opacity = '1';
+        if (username.length < 8 || username.length > 32)
+            alertElem.textContent = 'Username must contain 6 to 50 characters.';
+        else
+            alertElem.textContent = 'Username can contain only alphanumeric characters, hyphens and underscores.';
+        return false;
+    }
+}
+
+function validatePassword(password, alertElem) {
+    if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,32}$/.test(password)) {
+        alertElem.style.opacity = '0';
+        alertElem.textContent = '.';
+        return true;
+
+    } else {
+        alertElem.style.opacity = '1';
+        if (password.length < 8 || password.length > 32)
+            alertElem.textContent = 'Password must contain 8 to 32 characters.';
+        else
+            alertElem.textContent = 'Password must contain at least one letter and at least one number.';
+        return false;
+    }
 }

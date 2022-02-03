@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRunning, faUtensils, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
 import Login from './Login';
 import Register from './Register';
+import {getCookie} from "./utils";
 
 Object.defineProperty(String.prototype, 'capitalize', {
     value: function() {
@@ -90,7 +91,7 @@ export default function Home() {
         ['meals', 'utensils'],
         ['exercises', 'running'],
         ['personal', 'user'],
-        ['settings', 'cog']
+        ['settings', 'cog'],
     ];
     fontawesome.library.add(faUtensils, faRunning, faUser, faCog);
 
@@ -103,3 +104,18 @@ export default function Home() {
         </div>
     );
 };
+
+// Checks whether additional info about the user has been filled already.
+async function checkUserInfo() {
+    const csrftoken = getCookie('csrftoken');
+    const response = await fetch('/user_information/user_info/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: { }
+    });
+    const json = await response.json();
+    localStorage.setItem('userInfo', json);
+}

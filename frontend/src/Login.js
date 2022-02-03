@@ -20,7 +20,7 @@ function LoginForm() {
 
     const handleLogin = async (e, data) => {
         e.preventDefault();
-        
+
         const csrftoken = getCookie('csrftoken');
         const response = await fetch('/token-auth/', {
             method: 'POST',
