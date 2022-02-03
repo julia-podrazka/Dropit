@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+from datetime import date
 
 # Create your models here.
 
@@ -8,5 +10,8 @@ class FoodCalories(models.Model):
     food_item = models.TextField()
     cals_per_100g = models.IntegerField()
     kJ_per_100g = models.IntegerField()
+
+    def __str__(self):
+        return str(self.food_item)
 
 #LOAD DATA LOCAL INFILE 'calories.csv' INTO TABLE FoodCalories_foodcalories FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n' IGNORE 2 ROWS (food_category, food_item, cals_per_100g, kJ_per_100g);

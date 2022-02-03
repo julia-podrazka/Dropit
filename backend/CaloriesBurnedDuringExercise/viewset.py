@@ -1,5 +1,6 @@
 from django.db.models import Sum
 from .models import CaloriesBurnedDuringExercise, UserExercise
+from user_information.models import UserInformation
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from .serializers import UserSerializer
@@ -16,4 +17,10 @@ def get_sum(request):
     # query = '''SELECT * FROM CaloriesBurnedDuringExercise_userexercise'''
     # cursor.execute(query)
     # return Response(cursor.fetchone())
-    return Response(UserExercise.objects.filter(user=request.user, date=date.today()).aggregate(Sum('duration')))
+    sum = 0
+    for obj in UserExercise.objects.filter(user=request.user, date=date.today()):
+        for obj1 in CaloriesBurnedDuringExercise.objects.filter(exercise=obj.exercise):
+            for obj2 in UserInformation.objects.filter(user=request.user):
+                sum += obj1.calories_per_kg * obj2.weight * obj.duration / 60
+    # return Response(UserExercise.objects.filter(user=request.user, date=date.today()).aggregate(Sum('duration')))
+    return Response(sum)
