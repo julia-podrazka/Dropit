@@ -21,6 +21,14 @@ class CaloriesBurnedDuringExerciseViews(viewsets.ModelViewSet):
     #     return super().get_queryset().filter(exercise=self.request.data['exercise'])
 
 
+class CaloriesBurnedDuringExerciseViewsAll(viewsets.ModelViewSet):
+    queryset = CaloriesBurnedDuringExercise.objects.all()
+    serializer_class = CaloriesBurnedDuringExerciseSerializer
+
+    def get_queryset(self):
+        return super().get_queryset().filter()
+
+
 class UserExerciseViews(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = UserExercise.objects.all()
