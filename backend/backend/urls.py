@@ -19,4 +19,5 @@ urlpatterns = [
     path('token-auth/', obtain_jwt_token),
     path('accounts/', include('accounts.urls')),
     path('user_information/', include('user_information.urls')),
+    path('user_exercise/', include('CaloriesBurnedDuringExercise.urls')),
 ]

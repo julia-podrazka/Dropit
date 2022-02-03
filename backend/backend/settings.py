@@ -37,11 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'projekt',
     'products',
+    'rest_framework',
+    'corsheaders',
     'CaloriesBurnedDuringExercise',
     'FoodCalories',
     'FoodRecipes',
-    'rest_framework',
-    'corsheaders',
     'accounts.apps.AccountsConfig',
     'user_information',
 ]
