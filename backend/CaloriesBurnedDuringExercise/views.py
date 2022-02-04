@@ -10,6 +10,13 @@ from rest_framework.response import Response
 # Create your views here.
 
 
+@api_view(['POST'])
+def get_exercise_id(request):
+    string = request.data['exercise']
+    for item in CaloriesBurnedDuringExercise.objects.filter(exercise=string):
+        return Response(item.pk)
+
+
 class CaloriesBurnedDuringExerciseViews(viewsets.ModelViewSet):
     queryset = CaloriesBurnedDuringExercise.objects.all()
     serializer_class = CaloriesBurnedDuringExerciseIdSerializer

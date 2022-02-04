@@ -10,12 +10,32 @@ from rest_framework.response import Response
 # Create your views here.
 
 
+# @api_view(['GET'])
+# def get_food(request, food_item):
+#     food = str(food_item)
+#     for s in FoodCalories.objects.all():
+#         if s.food_item == food_item:
+#             return s.pk
+#     return Response(str(food_item))
+#     return Response(FoodCalories.objects.filter(food_item=str(food_item)))
+
+
+@api_view(['POST'])
+def get_food_id(request):
+    string = request.data['food_item']
+    for item in FoodCalories.objects.filter(food_item=string):
+        return Response(item.pk)
+
+
 class FoodCaloriesViews(viewsets.ModelViewSet):
     queryset = FoodCalories.objects.all()
     serializer_class = FoodCaloriesIdSerializer
 
-    def get_queryset(self):
-        return super().get_queryset().filter(food_item=self.request.data['food_item'])
+    # def get_queryset(self):
+    #     return super().get_queryset().filter(food_item=self.request.data['food_item'])
+
+    def get_food(self, request):
+        return super().get_queryset().filter(food_item=str(request))
 
     # @api_view(['GET'])
     # def get(self):
