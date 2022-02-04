@@ -21,15 +21,23 @@ function LoginForm() {
     const handleLogin = async (e, data) => {
         e.preventDefault();
 
-        const csrftoken = getCookie('csrftoken');
-        const response = await fetch('/token-auth/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
-            body: JSON.stringify(data),
-        });
+        const csrftoken = localStorage.getItem('token');
+        let response;
+
+        try {
+            response = await fetch('/token-auth/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify(data),
+            });
+        } catch (e) {
+            alert.style.opacity = '1';
+            return;
+        }
+
         const json = await response.json();
 
         localStorage.setItem('token', json.token);
@@ -61,7 +69,7 @@ function LoginForm() {
                 <i className="bi bi-eye-slash" id="toggle-password" onClick={togglePassword}/>
             </div>
             <div>
-                <span id="invalid-input-alert">TODO add credential validation</span>
+                <span id="invalid-input-alert">Invalid login lub password. Please try again.</span>
             </div>
             <div>
                 <input

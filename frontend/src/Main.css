@@ -223,4 +223,20 @@ hr {
   border-radius: 10px;
 }
 
+.meal-row {
+  height: 36px;
+}
+
+.meal-col {
+  line-height: 46px;
+}
+
+.meal-col span {
+  padding: 5px;
+  height: 100%;
+}
+
+.remove-btn {
+  background-color: indianred;
+}
 

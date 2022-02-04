@@ -1,14 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {ReactComponent as LogoSVG} from "./logo.svg";
 import fontawesome from '@fortawesome/fontawesome';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRunning, faUtensils, faUser, faCog } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faRunning, faUtensils, faUser, faCog} from '@fortawesome/free-solid-svg-icons';
 import Register from './Register';
 import IntroModal from './IntroModal';
 import {Link} from "react-router-dom";
+import {
+    getCategories,
+    getExerciseCalories, getFoodId,
+    getFoods,
+    getTodaysDate,
+    getUserExercises,
+    getUserInfo,
+    getUserMeals
+} from "./utils";
 
 Object.defineProperty(String.prototype, 'capitalize', {
-    value: function() {
+    value: function () {
         return this.charAt(0).toUpperCase() + this.slice(1);
     },
     enumerable: false
@@ -44,7 +53,64 @@ function Sidebar(props) {
 }
 
 function MealRow(props) {
+    const [removed, setRemoved] = useState(false);
 
+    if (removed)
+        return (<></>);
+    else
+        return (
+            <div className="row d-flex flex-row">
+                <div className="col-3 meal-col">
+                    <span>{props.values[0]}</span>
+                </div>
+                <div className="col-3 meal-col">
+                    <span>{props.values[1]}</span>
+                </div>
+                <div className="col-3 meal-col">
+                    <span>{props.values[2]}</span>
+                </div>
+                <div className="col-3">
+                    <button
+                        className="input-field remove-btn"
+                        onClick={() => {
+                            props.onclick();
+                            setRemoved(true);
+                        }}
+                    >
+                        Remove element
+                    </button>
+                </div>
+            </div>
+        )
+}
+
+function ExerciseRow(props) {
+    const [removed, setRemoved] = useState(false);
+
+    if (removed)
+        return (<></>);
+    else
+        return (
+            <div className="row d-flex flex-row">
+                <div className="col-4 ex-col">
+                    <span>{props.values[0]}</span>
+                </div>
+                <div className="col-4 ex-col">
+                    <span>{props.values[1]}</span>
+                </div>
+                <div className="col-4">
+                    <button
+                        className="input-field remove-btn"
+                        onClick={() => {
+                            props.onclick();
+                            setRemoved(true);
+                        }}
+                    >
+                        Remove element
+                    </button>
+                </div>
+            </div>
+        );
 }
 
 function Meals() {
@@ -55,7 +121,7 @@ function Meals() {
 
     const [foodItem, setFoodItem] = useState('');
     const [category, setCategory] = useState('');
-    const [date, setDate] = useState('');
+    const date = getTodaysDate();
     const [size, setSize] = useState('');
 
     async function fetchData() {
@@ -67,14 +133,16 @@ function Meals() {
         setCategories([...new Set(categoriesJson.map(x => x['food_category']))]);
     }
 
-    useEffect(() => { fetchData(); }, [updated]);
+    useEffect(() => {
+        fetchData();
+    }, [updated]);
 
     async function handleSubmit(e) {
         e.preventDefault();
 
         const csrftoken = localStorage.getItem('token');
         const body = new FormData;
-        body.append("food_item", '2'); // (await getFoodId(foodItem))[0].id
+        body.append("food_item", (await getFoodId(foodItem))[0].id);
         body.append("date", date);
         body.append("category", category);
         body.append("size", size);
@@ -89,62 +157,169 @@ function Meals() {
         setUpdated(!updated);
     }
 
+    function removeRow(row) {
+        // TODO request to remove
+        setUpdated(!updated);
+    }
+
     return (
-        <div>
-            <ul>
-                {
-                    meals.map(row =>
-                        <li key={row}>
-                            {JSON.stringify(row)}
-                        </li>
-                    )
-                }
-            </ul>
-            <form onSubmit={e => handleSubmit(e)}>
-                <input type="text" list="foods" onChange={e => setFoodItem(e.target.value)} />
-                <datalist id="foods">
-                    {foods.map(x => <option value={x} />) }
-                </datalist>
-                <input type="date" value={date} onChange={e => setDate(e.target.value)} />
-                <input type="text" list="categories" onChange={e => setCategory(e.target.value)} />
-                <datalist id="categories">
-                    {categories.map(x => <option value={x} />) }
-                </datalist>
-                <input type="number" value={size} onChange={e => setSize(e.target.value)} />
-                <input type="submit" />
+        <div className="container">
+            <br/>
+            <form className="row" onSubmit={e => handleSubmit(e)}>
+                <div className="col-3">
+                    <input
+                        name="food_type"
+                        className="input-field"
+                        type="text"
+                        list="foods"
+                        placeholder="Food type"
+                        onChange={e => setFoodItem(e.target.value)}
+                    />
+                    <datalist id="foods">
+                        {foods.map(x => <option value={x}/>)}
+                    </datalist>
+                </div>
+                <div className="col-3">
+                    <input
+                        name="category"
+                        className="input-field"
+                        type="text"
+                        list="categories"
+                        placeholder="Category"
+                        onChange={e => setCategory(e.target.value)}
+                    />
+                    <datalist id="categories">
+                        {categories.map(x => <option value={x}/>)}
+                    </datalist>
+                </div>
+                <div className="col-3">
+                    <input
+                        name="size"
+                        className="input-field"
+                        type="number"
+                        placeholder="Portion size"
+                        value={size}
+                        onChange={e => setSize(e.target.value)}
+                    />
+                </div>
+                <div className="col-3">
+                    <input className="input-field btn-chosen" type="submit" value="Add to list"/>
+                </div>
             </form>
+            <MealRow values={['dadasds', 'asdasdasd', 'sadasdsadsadasd']} onclick={removeRow.bind(this)}/>
+            <MealRow values={['dadasds', 'asdasdasd', 'sadasdsadsadasd']} onclick={removeRow.bind(this)}/>
+            <MealRow values={['dadasds', 'asdasdasd', 'sadasdsadsadasd']} onclick={removeRow.bind(this)}/>
+            {meals.map(row =>
+                <MealRow
+                    row={row}
+                    values={[row[1][1]['food_item'], row[3][1], row[4][1]]}
+                    onclick={removeRow.bind(this)}
+                />
+            )}
         </div>
     );
 }
 
 function Exercises() {
-    return (
-        <div/>
-    );
-}
+    const [updated, setUpdated] = useState(true);
+    const [calories, setCalories] = useState([]);
+    const [exercises, setExercises] = useState([]);
 
-function Personal() {
-    return (
-        <div/>
-    );
-}
+    const [exercise, setExercise] = useState('');
+    const date = getTodaysDate();
+    const [duration, setDuration] = useState('');
 
-function Settings() {
+    async function fetchData() {
+        const exercisesJson = await getUserExercises();
+        setExercises(exercisesJson);
+        const caloriesJson = await getExerciseCalories();
+        setCalories(caloriesJson.map(ex => ex['exercise']));
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [updated]);
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        const csrftoken = localStorage.getItem('token');
+        const body = new FormData;
+        body.append("exercise", 'somethingsomethingsomethingsomethingsomethingsomethingsomethingsomething');
+        body.append("date", date);
+        body.append("duration", duration);
+        const response = await fetch('/user_exercise/user_ex/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${csrftoken}`
+            },
+            body
+        });
+        const json = await response.json();
+        setUpdated(!updated);
+    }
+
+    function removeRow(row) {
+
+
+        setUpdated(!updated);
+    }
+
     return (
-        <div/>
+        <div className="container">
+            <br/>
+            <form className="row" onSubmit={e => handleSubmit(e)}>
+                <div className="col-4">
+                    <input
+                        name="exercise"
+                        className="input-field"
+                        type="text"
+                        list="exercises"
+                        placeholder="Exercise type"
+                        onChange={e => setExercise(e.target.value)}
+                    />
+                    <datalist id="exercises">
+                        {exercises.map(x => <option value={x}/>)}
+                    </datalist>
+                </div>
+                <div className="col-4">
+                    <input
+                        name="duration"
+                        className="input-field"
+                        type="number"
+                        placeholder="Exercise duration"
+                        value={duration}
+                        onChange={e => setDuration(e.target.value)}
+                    />
+                </div>
+                <div className="col-4">
+                    <input className="input-field btn-chosen" type="submit" value="Add to list"/>
+                </div>
+            </form>
+            <ExerciseRow values={['dadasds', 'asdasdasd']} onclick={removeRow.bind(this)}/>
+            <ExerciseRow values={['dadasds', 'asdasdasd']} onclick={removeRow.bind(this)}/>
+            <ExerciseRow values={['dadasds', 'asdasdasd']} onclick={removeRow.bind(this)}/>
+            {/*{meals.map(row =>*/}
+            {/*    <MealRow*/}
+            {/*        row={row}*/}
+            {/*        values={[row[1][1]['food_item'], row[3][1], row[4][1]]}*/}
+            {/*        onclick={removeRow.bind(this)}*/}
+            {/*    />*/}
+            {/*)}*/}
+        </div>
     );
 }
 
 function Content(props) {
     switch (props.content) {
         case 'meals':
-            return <Meals />;
+            return <Meals/>;
         case 'exercises':
-            return <Register />;
-        case 'personal':
-            return <Personal />;
-        case 'settings':
-            return <Settings />;
+            return <Exercises/>;
+        // case 'personal':
+        //     return <Personal />;
+        // case 'settings':
+        //     return <Settings />;
         default:
             return <></>;
     }
@@ -156,8 +331,8 @@ export default function Home() {
     const options = [
         ['meals', 'utensils'],
         ['exercises', 'running'],
-        ['personal', 'user'],
-        ['settings', 'cog'],
+        // ['personal', 'user'],
+        // ['settings', 'cog'],
     ];
     fontawesome.library.add(faUtensils, faRunning, faUser, faCog);
     getUserInfo(setShowModal.bind(this));
@@ -168,52 +343,7 @@ export default function Home() {
             <div className="container">
                 <Content content={content}/>
             </div>
-            {showModal && <IntroModal onSubmit={setShowModal.bind(this, false)} />}
+            {showModal && <IntroModal onSubmit={setShowModal.bind(this, false)}/>}
         </div>
     );
 };
-
-async function httpGet(url) {
-    const csrftoken = localStorage.getItem('token');
-    return await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${csrftoken}`
-        },
-    });
-}
-
-// Checks whether additional info about the user has been filled already.
-async function getUserInfo(callback) {
-    const response = await httpGet('/user_information/user_info/');
-    const json = await response.json();
-    if (JSON.stringify(json) !== '[]' && JSON.stringify(json) !== '{}')
-        callback(false);
-}
-
-async function getUserMeals() {
-    const response = await httpGet('/user_meal/user_m/');
-    return await response.json();
-}
-
-async function getFoods() {
-    const response = await httpGet('/user_meal/all_calories/');
-    return await response.json();
-}
-
-async function getCategories() {
-    const response = await httpGet('/user_meal/all_categories/');
-    return await response.json();
-}
-
-async function getFoodId(food_item) {
-    const csrftoken = localStorage.getItem('token');
-    const response = await fetch('/user_meal/calories/', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${csrftoken}`
-        },
-        body: {food_item}
-    });
-    return await response.json();
-}

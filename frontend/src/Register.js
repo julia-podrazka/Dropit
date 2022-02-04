@@ -23,7 +23,7 @@ function RegisterForm() {
         if (!validateUsername(username, alert) || !validatePassword(password, alert))
             return;
 
-        const csrftoken = getCookie('csrftoken');
+        const csrftoken = localStorage.getItem('token');
         const response = await fetch('/accounts/users/', {
             method: 'POST',
             headers: {
