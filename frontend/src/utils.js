@@ -40,28 +40,45 @@ export async function getExerciseCalories() {
     return await response.json();
 }
 
+export async function getFoodSum() {
+    const response = await httpGet('/user_meal/sum_food_calories/')
+    return await response.json();
+}
+
+export async function getExerciseSum() {
+    const response = await httpGet('/user_exercise/sum_calories/')
+    return await response.json();
+}
+
 export async function getFoodId(food_item) {
     const csrftoken = localStorage.getItem('token');
-    const response = await fetch(`/user_meal/calories/?food_item="${food_item}"`, {
-        method: 'GET',
+    const body = new FormData();
+    body.append("food_item", food_item);
+    const response = await fetch(`/user_meal/calories/`, {
+        method: 'POST', // tak naprawde to GET hehe
         headers: {
             'Authorization': `Bearer ${csrftoken}`
         },
+        body,
     });
     return await response.json();
 }
 
 export async function getExerciseId(exercise) {
     const csrftoken = localStorage.getItem('token');
-    const response = await fetch(`/user_exercise/calories/?food_item="${exercise}"`, {
-        method: 'GET',
+    const body = new FormData();
+    body.append("exercise", exercise);
+    const response = await fetch(`/user_exercise/calories/`, {
+        method: 'POST', // tak naprawde to GET hehe
         headers: {
             'Authorization': `Bearer ${csrftoken}`
         },
+        body,
     });
     return await response.json();
 }
 
 export function getTodaysDate() {
-    return new Date().toLocaleString().split(',')[0].split('.').join('-');
+    const today = new Date();
+    return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
 }

@@ -8,8 +8,8 @@ import IntroModal from './IntroModal';
 import {Link} from "react-router-dom";
 import {
     getCategories,
-    getExerciseCalories, getFoodId,
-    getFoods,
+    getExerciseCalories, getExerciseId, getExerciseSum, getFoodId,
+    getFoods, getFoodSum,
     getTodaysDate,
     getUserExercises,
     getUserInfo,
@@ -123,6 +123,7 @@ function Meals() {
     const [category, setCategory] = useState('');
     const date = getTodaysDate();
     const [size, setSize] = useState('');
+    const [calSum, setCalSum] = useState(0);
 
     async function fetchData() {
         const mealsJson = await getUserMeals();
@@ -131,6 +132,7 @@ function Meals() {
         setFoods([...new Set(foodsJson.map(x => x['food_item']))]);
         const categoriesJson = await getCategories();
         setCategories([...new Set(categoriesJson.map(x => x['food_category']))]);
+        setCalSum(await getFoodSum());
     }
 
     useEffect(() => {
@@ -140,18 +142,24 @@ function Meals() {
     async function handleSubmit(e) {
         e.preventDefault();
 
+        console.log(JSON.stringify({
+            'food_item': await getFoodId(foodItem),
+            date, category, size
+        }))
+
         const csrftoken = localStorage.getItem('token');
-        const body = new FormData;
-        body.append("food_item", (await getFoodId(foodItem))[0].id);
+        const body = new FormData();
+        body.append("food_item", await getFoodId(foodItem));
         body.append("date", date);
         body.append("category", category);
         body.append("size", size);
+
         const response = await fetch('/user_meal/user_m/', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${csrftoken}`
+                Authorization: `Bearer ${csrftoken}`
             },
-            body
+            body,
         });
         const json = await response.json();
         setUpdated(!updated);
@@ -206,16 +214,23 @@ function Meals() {
                     <input className="input-field btn-chosen" type="submit" value="Add to list"/>
                 </div>
             </form>
-            <MealRow values={['dadasds', 'asdasdasd', 'sadasdsadsadasd']} onclick={removeRow.bind(this)}/>
-            <MealRow values={['dadasds', 'asdasdasd', 'sadasdsadsadasd']} onclick={removeRow.bind(this)}/>
-            <MealRow values={['dadasds', 'asdasdasd', 'sadasdsadsadasd']} onclick={removeRow.bind(this)}/>
-            {meals.map(row =>
-                <MealRow
-                    row={row}
-                    values={[row[1][1]['food_item'], row[3][1], row[4][1]]}
-                    onclick={removeRow.bind(this)}
-                />
+            {meals.map(row => {
+                console.log(JSON.stringify(row));
+                    return <MealRow
+                        row={row}
+                        values={[ row['food_item_detail']['food_item'], row['category'], row['size'] ]}
+                        onclick={removeRow.bind(this)}
+                    />
+            }
             )}
+            <div className="row d-flex flex-row">
+                <div className="col-3 ex-col" />
+                <div className="col-3 ex-col" />
+                <div className="col-3 ex-col" />
+                <div className="col-3">
+                    Sum: {calSum.toFixed(0)} calories
+                </div>
+            </div>
         </div>
     );
 }
@@ -228,12 +243,14 @@ function Exercises() {
     const [exercise, setExercise] = useState('');
     const date = getTodaysDate();
     const [duration, setDuration] = useState('');
+    const [calSum, setCalSum] = useState(0);
 
     async function fetchData() {
         const exercisesJson = await getUserExercises();
         setExercises(exercisesJson);
         const caloriesJson = await getExerciseCalories();
         setCalories(caloriesJson.map(ex => ex['exercise']));
+        setCalSum(await getExerciseSum());
     }
 
     useEffect(() => {
@@ -245,7 +262,7 @@ function Exercises() {
 
         const csrftoken = localStorage.getItem('token');
         const body = new FormData;
-        body.append("exercise", 'somethingsomethingsomethingsomethingsomethingsomethingsomethingsomething');
+        body.append("exercise", await getExerciseId(exercise));
         body.append("date", date);
         body.append("duration", duration);
         const response = await fetch('/user_exercise/user_ex/', {
@@ -279,7 +296,7 @@ function Exercises() {
                         onChange={e => setExercise(e.target.value)}
                     />
                     <datalist id="exercises">
-                        {exercises.map(x => <option value={x}/>)}
+                        {calories.map(x => <option value={x} />)}
                     </datalist>
                 </div>
                 <div className="col-4">
@@ -296,16 +313,20 @@ function Exercises() {
                     <input className="input-field btn-chosen" type="submit" value="Add to list"/>
                 </div>
             </form>
-            <ExerciseRow values={['dadasds', 'asdasdasd']} onclick={removeRow.bind(this)}/>
-            <ExerciseRow values={['dadasds', 'asdasdasd']} onclick={removeRow.bind(this)}/>
-            <ExerciseRow values={['dadasds', 'asdasdasd']} onclick={removeRow.bind(this)}/>
-            {/*{meals.map(row =>*/}
-            {/*    <MealRow*/}
-            {/*        row={row}*/}
-            {/*        values={[row[1][1]['food_item'], row[3][1], row[4][1]]}*/}
-            {/*        onclick={removeRow.bind(this)}*/}
-            {/*    />*/}
-            {/*)}*/}
+            {exercises.map(row =>
+                <ExerciseRow
+                    row={row}
+                    values={[row['exercise_detail']['exercise'], row['duration']]}
+                    onclick={removeRow.bind(this)}
+                />
+            )}
+            <div className="row d-flex flex-row">
+                <div className="col-4 ex-col" />
+                <div className="col-4 ex-col" />
+                <div className="col-4">
+                    Sum: {calSum.toFixed(0)} calories
+                </div>
+            </div>
         </div>
     );
 }
