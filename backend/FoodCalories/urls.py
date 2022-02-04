@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import UserMealViews, FoodCaloriesViews, FoodCaloriesViewsAll, FoodCaloriesCategoryViewsAll, get_food_id
+from .views import UserMealViews, FoodCaloriesViews, FoodCaloriesViewsAll, FoodCaloriesCategoryViewsAll, get_food_id, \
+    delete_food
 from .viewset import get_sum
 
 router = DefaultRouter()
@@ -14,5 +15,6 @@ urlpatterns = [
     path('sum_food_calories/', get_sum),
     # path('calories/<slug:food_item>/', get_food),
     path('calories/', get_food_id),
+    path('delete/', delete_food),
 ]
 

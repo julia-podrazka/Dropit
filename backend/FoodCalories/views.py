@@ -27,6 +27,22 @@ def get_food_id(request):
         return Response(item.pk)
 
 
+@api_view(['POST'])
+def delete_food(request):
+    string = request.data['food_item']
+    current_date = request.data['date']
+    food_category = request.data['category']
+    food_size = request.data['size']
+    user = request.user
+    for item in UserMeal.objects.filter(user=user.pk, category=food_category, size=food_size, date=current_date):
+        for food in FoodCalories.objects.filter(food_item=string):
+            if item.food_item == food:
+                query = item
+                query.delete()
+                return Response("Deleted")
+    return Response("Not found")
+
+
 class FoodCaloriesViews(viewsets.ModelViewSet):
     queryset = FoodCalories.objects.all()
     serializer_class = FoodCaloriesIdSerializer

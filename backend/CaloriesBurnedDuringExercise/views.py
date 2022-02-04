@@ -17,6 +17,21 @@ def get_exercise_id(request):
         return Response(item.pk)
 
 
+@api_view(['POST'])
+def delete_exercise(request):
+    string = request.data['exercise']
+    current_date = request.data['date']
+    exercise_duration = request.data['duration']
+    user = request.user
+    for item in UserExercise.objects.filter(user=user.pk, duration=exercise_duration, date=current_date):
+        for exercise in CaloriesBurnedDuringExercise.objects.filter(exercise=string):
+            if item.exercise == exercise:
+                query = item
+                query.delete()
+                return Response("Deleted")
+    return Response("Not found")
+
+
 class CaloriesBurnedDuringExerciseViews(viewsets.ModelViewSet):
     queryset = CaloriesBurnedDuringExercise.objects.all()
     serializer_class = CaloriesBurnedDuringExerciseIdSerializer
@@ -67,4 +82,3 @@ class UserExerciseViews(viewsets.ModelViewSet):
         ).first()
         save_data['exercise'] = contact
         serializer.save(user=self.request.user, **save_data)
-
