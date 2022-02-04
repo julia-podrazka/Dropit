@@ -95,6 +95,7 @@ input {
   padding-left: 10px;
   width: 100%;
   align-items: stretch;
+  transition: background-color ease 0.3s;
 }
 
 .submit-btn {
@@ -107,8 +108,8 @@ input {
 }
 
 .vertical-center {
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh; /* These two lines are counted as one :-)       */
+  min-height: 100%;
+  min-height: 100vh;
 
   display: flex;
   align-items: center;
@@ -148,17 +149,78 @@ hr {
   color: var(--my-green);
 }
 
-.modal {
+.hidden {
   display: none;
+}
+
+.modal {
+  display: flex;
   position: fixed;
+  justify-content: center;
   z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+  padding: 50px;
   overflow: auto;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
+}
+
+.modal-header {
+  text-align: center;
+  padding: 15px 30px;
+  border: 0;
+}
+
+.modal-header h1 {
+  width: 100%;
+}
+
+.modal-content {
+  max-width: 40%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  background-color: var(--bg-dark);
+}
+
+.input-pack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.input-label label {
+  display: flex;
+  align-items: center;
+  line-height: 20px;
+  margin: 0;
+}
+
+.btn-chosen {
+  background-color: var(--my-green);
+  color: black;
+}
+
+.btn-required {
+  border: solid 1px indianred;
+}
+
+.table-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.my-table {
+  height: 80%;
+  width: 80%;
+  background-color: var(--bg-light);
+  border-radius: 10px;
 }
 
 

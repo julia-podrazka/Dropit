@@ -1,59 +1,170 @@
 import React, {useState} from 'react';
 
-function IntroModal() {
-    const questions = ['name', 'age', 'gender', 'weight', 'height', 'vegetarian', 'max_calories'];
-    const answers = {};
-    const [questionId, setQuestionId] = useState(0);
-    const [answer, setAnswer] = useState('');
+function InputRow(props) {
+    return (
+        <div className="input-pack row">
+            <div className="col-4 input-label">
+                <label htmlFor="name">{props.label}</label>
+            </div>
+            <div className="col-8 d-flex flex-row">
+                {props.children}
+            </div>
+        </div>
+    );
+}
 
-    const onChangeAnswer = e => {
-        setAnswer(e.target.value);
-        answers[e.target.name] = e.target.value;
-    };
+export default function IntroModal(props) {
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [gender, setGender] = useState('');
+    const [weight, setWeight] = useState('');
+    const [height, setHeight] = useState('');
+    const [vegetarian, setVegetarian] = useState('');
+    const [maxCalories, setMaxCalories] = useState('');
+    const [submitted, setSubmitted] = useState(false);
 
-    const handleModalAnswer = async e => {
+    const answers = {name, age, gender, weight, height, vegetarian, max_calories: maxCalories};
+
+    const handleSubmit = async e => {
         e.preventDefault();
-        const response = await fetch('/user_information/user_info/', {
-            type: 'POST',
+
+        const csrftoken = localStorage.getItem('token');
+        await fetch('/user_information/user_info/', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,
+                'Authorization': `Bearer ${csrftoken}`
             },
-            body: answers,
+            body: JSON.stringify(answers),
         });
-        const json = await response.json();
-        // TODO finish this branch
+
+        props.onSubmit();
     };
 
-    //     name = models.CharField(max_length=30)
-    //     age = models.IntegerField()
-    //     gender = models.CharField(max_length=1)
-    //     weight = models.IntegerField()
-    //     height = models.IntegerField()
-    //     vegetarian = models.CharField(max_length=1)
-    //     max_calories = models.IntegerField()
-
     return (
-        <form onSubmit={e => handleModalAnswer(e)}>
-            <div>
-                <input className="input-field"
-                       type="text"
-                       name="name"
-                       value={answer}
-                       onChange={onChangeAnswer}
-                />
+        <div className={props.hidden ? "modal hidden" : "modal"}>
+            <div className="modal-content">
+                <div className="modal-header">
+                    <h1>Introduce yourself!</h1>
+                </div>
+                <form id='lol' onSubmit={e => { setSubmitted(true); handleSubmit(e); }}>
+                    <fieldset>
+                        <InputRow label="Name">
+                            <input
+                                className={!submitted || name ? "input-field" : "input-field btn-required"}
+                                type="text"
+                                id="name"
+                                value={name}
+                                onChange={e => setName(validateName(e.target.value))}
+                            />
+                        </InputRow>
+                        <InputRow label="Age">
+                            <input
+                                className={!submitted || age ? "input-field" : "input-field btn-required"}
+                                type="text"
+                                id="age"
+                                value={age}
+                                onChange={e => setAge(validateNumber(e.target.value))}
+                            />
+                        </InputRow>
+                        <InputRow label="Gender">
+                            <input
+                                className={!submitted || gender ? "input-field" : "input-field btn-required"}
+                                type="button"
+                                id="gender-m"
+                                value="Male"
+                                onClick={e => {
+                                    setGender('M');
+                                    chooseOption(e.target, document.getElementById('gender-f'));
+                                }}
+                            />
+                            <input
+                                className={!submitted || gender ? "input-field" : "input-field btn-required"}
+                                type="button"
+                                id="gender-f"
+                                value="Female"
+                                onClick={e => {
+                                    setGender('F');
+                                    chooseOption(e.target, document.getElementById('gender-m'));
+                                }}
+                            />
+                        </InputRow>
+                        <InputRow label="Weight (in kg)">
+                            <input
+                                className={!submitted || weight ? "input-field" : "input-field btn-required"}
+                                type="text"
+                                id="weight"
+                                value={weight}
+                                onChange={e => setWeight(validateNumber(e.target.value))}
+                            />
+                        </InputRow>
+                        <InputRow label="Height (in cm)">
+                            <input
+                                className={!submitted || height ? "input-field" : "input-field btn-required"}
+                                type="text"
+                                id="height"
+                                value={height}
+                                onChange={e => setHeight(validateNumber(e.target.value))}
+                            />
+                        </InputRow>
+                        <InputRow label="Are you vegetarian?">
+                            <input
+                                className={!submitted || vegetarian ? "input-field" : "input-field btn-required"}
+                                type="button"
+                                id="veg-y"
+                                value="Yes"
+                                onClick={e => {
+                                    setVegetarian('Y');
+                                    chooseOption(e.target, document.getElementById('veg-n'));
+                                }}
+                            />
+                            <input
+                                className={!submitted || vegetarian ? "input-field" : "input-field btn-required"}
+                                type="button"
+                                id="veg-n"
+                                value="No"
+                                onClick={e => {
+                                    setVegetarian('N');
+                                    chooseOption(e.target, document.getElementById('veg-y'));
+                                }}
+                            />
+                        </InputRow>
+                        <InputRow label="Maximum calories intake">
+                            <input className={!submitted || maxCalories ? "input-field" : "input-field btn-required"}
+                                   type="text"
+                                   id="max_calories"
+                                   value={maxCalories}
+                                   onChange={e => setMaxCalories(validateNumber(e.target.value))}
+                            />
+                        </InputRow>
+                        <br/>
+                        <div className="input-pack row">
+                            <div className="col-3"/>
+                            <div className="col-6">
+                                <input className="input-field" type="submit" />
+                            </div>
+                            <div className="col-3"/>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
-            <div>
-                <input className="input-field"
-                       type="text"
-                       name="name"
-                       value={answer}
-                       onChange={onChangeAnswer}
-                />
-            </div>
-            <div>
-                <input type="submit"/>
-            </div>
-        </form>
+        </div>
     );
+}
+
+function validateName(input) {
+    return /^[a-zA-Z]{0,30}$/.test(input)
+        ? input.substr(0, 1).toUpperCase() + input.substr(1)
+        : input.substr(0, input.length - 1);
+}
+
+function validateNumber(input) {
+    return /^([1-9][\d]{0,3})$/.test(input)
+        ? parseInt(input)
+        : input.substr(0, input.length - 1);
+}
+
+function chooseOption(btn, other) {
+    btn.className = "btn-chosen input-field";
+    other.className = "input-field";
 }
