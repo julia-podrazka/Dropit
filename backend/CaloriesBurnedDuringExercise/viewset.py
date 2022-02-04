@@ -18,9 +18,9 @@ def get_sum(request):
     # cursor.execute(query)
     # return Response(cursor.fetchone())
     sum = 0
-    for obj in UserExercise.objects.filter(user=request.user, date=date.today()):
-        for obj1 in CaloriesBurnedDuringExercise.objects.filter(exercise=obj.exercise):
-            for obj2 in UserInformation.objects.filter(user=request.user):
-                sum += obj1.calories_per_kg * obj2.weight * obj.duration / 60
+    for user_exercise in UserExercise.objects.filter(user=request.user, date=date.today()):
+        for calories in CaloriesBurnedDuringExercise.objects.filter(exercise=user_exercise.exercise):
+            for current_user in UserInformation.objects.filter(user=request.user):
+                sum += calories.calories_per_kg * current_user.weight * user_exercise.duration / 60
     # return Response(UserExercise.objects.filter(user=request.user, date=date.today()).aggregate(Sum('duration')))
     return Response(sum)
