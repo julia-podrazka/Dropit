@@ -7,8 +7,6 @@ from .serializers import UserExerciseSerializer, CaloriesBurnedDuringExerciseSer
 from datetime import date
 from rest_framework.response import Response
 
-# Create your views here.
-
 
 @api_view(['POST'])
 def get_exercise_id(request):
@@ -39,10 +37,6 @@ class CaloriesBurnedDuringExerciseViews(viewsets.ModelViewSet):
     def get_queryset(self):
         return super().get_queryset().filter(exercise=self.request.data['exercise'])
 
-    # @api_view(['GET'])
-    # def get(self):
-    #     return super().get_queryset().filter(exercise=self.request.data['exercise'])
-
 
 class CaloriesBurnedDuringExerciseViewsAll(viewsets.ModelViewSet):
     queryset = CaloriesBurnedDuringExercise.objects.all()
@@ -58,21 +52,7 @@ class UserExerciseViews(viewsets.ModelViewSet):
     serializer_class = UserExerciseSerializer
 
     def get_queryset(self):
-        # return super().get_queryset().filter(user=self.request.user, date=date.today(),
-        #   duration=self.request.data['duration'])
         return super().get_queryset().filter(user=self.request.user, date=date.today())
-
-    # def create(self, request, *args, **kwargs):
-    #     data = {
-    #         "user": self.request.user,
-    #         "exercise": request.POST.get('exercise', '')
-    #     }
-    #     serializer = self.serializer_class(data=data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
     def perform_create(self, serializer):
         save_data = {}

@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from .models import UserMeal, FoodCalories
@@ -6,18 +6,6 @@ from .serializers import UserMealSerializer, FoodCaloriesSerializer, FoodCalorie
     FoodCaloriesCategorySerializer
 from datetime import date
 from rest_framework.response import Response
-
-# Create your views here.
-
-
-# @api_view(['GET'])
-# def get_food(request, food_item):
-#     food = str(food_item)
-#     for s in FoodCalories.objects.all():
-#         if s.food_item == food_item:
-#             return s.pk
-#     return Response(str(food_item))
-#     return Response(FoodCalories.objects.filter(food_item=str(food_item)))
 
 
 @api_view(['POST'])
@@ -47,15 +35,8 @@ class FoodCaloriesViews(viewsets.ModelViewSet):
     queryset = FoodCalories.objects.all()
     serializer_class = FoodCaloriesIdSerializer
 
-    # def get_queryset(self):
-    #     return super().get_queryset().filter(food_item=self.request.data['food_item'])
-
     def get_food(self, request):
         return super().get_queryset().filter(food_item=str(request))
-
-    # @api_view(['GET'])
-    # def get(self):
-    #     return super().get_queryset().filter(exercise=self.request.data['exercise'])
 
 
 class FoodCaloriesViewsAll(viewsets.ModelViewSet):
@@ -80,21 +61,7 @@ class UserMealViews(viewsets.ModelViewSet):
     serializer_class = UserMealSerializer
 
     def get_queryset(self):
-        # return super().get_queryset().filter(user=self.request.user, date=date.today(),
-        #   duration=self.request.data['duration'])
         return super().get_queryset().filter(user=self.request.user, date=date.today())
-
-    # def create(self, request, *args, **kwargs):
-    #     data = {
-    #         "user": self.request.user,
-    #         "exercise": request.POST.get('exercise', '')
-    #     }
-    #     serializer = self.serializer_class(data=data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
     def perform_create(self, serializer):
         save_data = {}
