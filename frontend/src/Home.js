@@ -3,7 +3,6 @@ import {ReactComponent as LogoSVG} from "./logo.svg";
 import fontawesome from '@fortawesome/fontawesome';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faRunning, faUtensils, faUser, faCog} from '@fortawesome/free-solid-svg-icons';
-import Register from './Register';
 import IntroModal from './IntroModal';
 import {Link} from "react-router-dom";
 import {
@@ -73,7 +72,7 @@ function MealRow(props) {
                     <button
                         className="input-field remove-btn"
                         onClick={() => {
-                            props.onclick();
+                            props.onclick(props.row);
                             setRemoved(true);
                         }}
                     >
@@ -102,7 +101,7 @@ function ExerciseRow(props) {
                     <button
                         className="input-field remove-btn"
                         onClick={() => {
-                            props.onclick();
+                            props.onclick(props.row);
                             setRemoved(true);
                         }}
                     >
@@ -142,11 +141,6 @@ function Meals() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        console.log(JSON.stringify({
-            'food_item': await getFoodId(foodItem),
-            date, category, size
-        }))
-
         const csrftoken = localStorage.getItem('token');
         const body = new FormData();
         body.append("food_item", await getFoodId(foodItem));
@@ -166,7 +160,21 @@ function Meals() {
     }
 
     function removeRow(row) {
-        // TODO request to remove
+        console.log(row);
+        const csrftoken = localStorage.getItem('token');
+        fetch('/user_meal/delete/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${csrftoken}`
+            },
+            body: JSON.stringify({
+                food_item: row.food_item_detail.food_item,
+                date: row.date,
+                category: row.category,
+                size: row.size
+            })
+        });
         setUpdated(!updated);
     }
 
@@ -181,6 +189,7 @@ function Meals() {
                         type="text"
                         list="foods"
                         placeholder="Food type"
+                        autoComplete="off"
                         onChange={e => setFoodItem(e.target.value)}
                     />
                     <datalist id="foods">
@@ -194,10 +203,15 @@ function Meals() {
                         type="text"
                         list="categories"
                         placeholder="Category"
+                        autoComplete="off"
                         onChange={e => setCategory(e.target.value)}
                     />
                     <datalist id="categories">
-                        {categories.map(x => <option value={x}/>)}
+                        <option value="Breakfast" />
+                        <option value="Lunch" />
+                        <option value="Dinner" />
+                        <option value="Supper" />
+                        <option value="Snack" />
                     </datalist>
                 </div>
                 <div className="col-3">
@@ -215,7 +229,6 @@ function Meals() {
                 </div>
             </form>
             {meals.map(row => {
-                console.log(JSON.stringify(row));
                     return <MealRow
                         row={row}
                         values={[ row['food_item_detail']['food_item'], row['category'], row['size'] ]}
@@ -277,8 +290,20 @@ function Exercises() {
     }
 
     function removeRow(row) {
-
-
+        console.log(row);
+        const csrftoken = localStorage.getItem('token');
+        fetch('/user_exercise/delete/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${csrftoken}`
+            },
+            body: JSON.stringify({
+                exercise: row.exercise_detail.exercise,
+                date: row.date,
+                duration: row.duration
+            })
+        });
         setUpdated(!updated);
     }
 
@@ -293,6 +318,7 @@ function Exercises() {
                         type="text"
                         list="exercises"
                         placeholder="Exercise type"
+                        autoComplete="off"
                         onChange={e => setExercise(e.target.value)}
                     />
                     <datalist id="exercises">
@@ -348,7 +374,7 @@ function Content(props) {
 
 export default function Home() {
     const [content, setContent] = useState('meals');
-    const [showModal, setShowModal] = useState(false); ///////////////////////////////////////// CHANGE TO TRUE
+    const [showModal, setShowModal] = useState(true);
     const options = [
         ['meals', 'utensils'],
         ['exercises', 'running'],

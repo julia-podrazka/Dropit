@@ -23,7 +23,7 @@ function RegisterForm() {
         if (!validateUsername(username, alert) || !validatePassword(password, alert))
             return;
 
-        const csrftoken = localStorage.getItem('token');
+        const csrftoken = getCookie('csrftoken');
         const response = await fetch('/accounts/users/', {
             method: 'POST',
             headers: {
@@ -33,6 +33,7 @@ function RegisterForm() {
             body: JSON.stringify(data),
         });
         const json = await response.json();
+        console.log(json);
         localStorage.setItem('token', json.token);
         localStorage.setItem('username', json.username);
         navigate('/home/');
