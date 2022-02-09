@@ -21,9 +21,6 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
-    #def clean(self):
-
-
     def clean_username(self):
         username = self.cleaned_data.get("username")
         search_user = User.objects.filter(username__iexact=username)

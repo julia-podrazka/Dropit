@@ -26,7 +26,6 @@ class UserMealSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserMeal
         fields = ('food_item', 'food_item_detail', 'date', 'category', 'size',)
-        # exclude = ('user',)
 
 
 class UserSerializer(serializers.ModelSerializer):
